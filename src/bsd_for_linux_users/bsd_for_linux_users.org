@@ -1,0 +1,456 @@
+#+TITLE:     BSD for Linux Users
+#+AUTHOR:    Aaron Poffenberger
+#+EMAIL:     akp@hypernote.com
+#+DATE:      2015-08-22 Saturday
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+LaTeX_HEADER: \usepackage{fontspec}
+#+LaTeX_HEADER: \setmainfont{Times New Roman}
+#+LaTeX_HEADER: \setmainfont[Mapping=tex-text]{Times New Roman}
+#+LaTeX_HEADER: \setsansfont[Mapping=tex-text]{Arial}
+#+LaTeX_HEADER: \newfontfamily\greekfont[Script=Greek]{Linux Libertine O}
+#+LaTeX_HEADER: \newfontfamily\greekfontsf[Script=Greek]{Linux Libertine O}
+#+LaTeX_HEADER: \usepackage{polyglossia}
+#+LaTeX_HEADER: \setdefaultlanguage{english}
+#+LATEX_HEADER: \setmainfont[Mapping=tex-text]{Arial}
+
+#+startup: oddeven
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,t]
+#+BEAMER_THEME: Madrid
+#+BEAMER_FRAME_LEVEL: 2
+
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+PROPERTY: BEAMER_col_ALL 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.0 :ETC
+
+* Introduction
+** Introduction - Background
+#+INCLUDE: "../common/background.org"
+** Introduction - OS Bona Fides
+*** Introduction - Bona Fides                                         :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + BSD Experience
+      - FreeBSD 4.x
+      - OpenBSD 3.3+
+      - PC-BSD 10.x
+      - FreeNas
+      - PFSense
+    + Macintosh
+      - System 6 & 7
+      - Mac OS 8 & 9
+      - OS X 10.1+
+    + Windows Experience
+      - Windows 3.0, WFW
+      - Windows NT 3.51+ (Intel, Alpha and PPC)
+*** Introduction - Bona Fides                                         :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + Linux Experience
+      - Slackware 3.0
+      - Yellow Dog Linux 1.x?
+      - LinuxPPC/MKLinux 
+      - SuSE Linux 4.x - 5.x
+      - Gentoo
+      - Smoothwall
+      - RHEL 4.x - 6.x
+      - CentOS 4.x - 6.x
+      - Ubuntu 4.10+
+      - Fedora 13+
+      - Kali 1.x+
+* What is BSD?
+** What is BSD? Then
+   + Berkeley Software Distribution
+     - Not "Berkeley System Distribution"
+   + Direct descendant from AT&T Unix
+     - Brought to Berkeley (/alma mater/) when Ken Thompson took sabbatical in 1975
+   + Developed by Computer Systems Research Group (CSRG) UC Berkeley
+   + Active from 1977 to 1995
+   + Began as tape of various programs and utilities
+   + Ended as nearly complete operating system
+     - 6 files still "encumbered"
+** What is BSD? Then cont
+   + 4.4BSD-Lite final version
+   + Numerous technologies, programs and other free-software ideas originated or propagated in BSD
+     - ed, vi & csh
+     - Pascal compiler
+     - Berkeley Sockets
+     - Berkeley Fast File System
+     - BSD license (4-, 3- and 2-clause versions)
+     - First Unix to have virtual memory
+   + The Lawsuit
+     - USL sued BSDi and U-Cal Berkeley over licenses
+     - Eventual settled when UCB showed USL had violated UCB copyright
+     - (Yeah, that's a very short version of the lawsuit history.)
+   + https://www.mckusick.com/history/index.html
+** What is BSD? Now
+   + Family of Unix-like operating systems
+     - Different focus by project
+   + Not quite like a Linux distribution
+     - Kernels and userland began life at 4.4BSD-Lite, diverged
+     - Share code between projects, collaborate
+   + BSD licensed
+   + Developed as a complete OS
+     - Kernel plus userland
+   + Emphasis on documentation
+   + Very POSIX compliant
+   + Application software from "ports"
+     - Similar to packages
+     - Historically built-on-demand
+     - Now most BSDs offer binaries as well
+** Notable BSD Systems
+   + SunOS
+   + FreeBSD
+   + NetBSD 
+   + OpenBSD
+   + MacOS
+   + DragonFlyBSD
+   + PC-BSD
+   + More http://www.damnsmallbsd.org/pub/BSD-UNIX
+* Notable BSDs
+** SunOS (not Solaris or OpenSolaris)
+   + Based on 4.1BSD
+   + Ran on 68000 series of processors
+   + v2.0 based on 4.2BSD
+     - Firs release of NFS
+   + v5.0 and later (Solaris) saw switch to System V Release 4 as base
+   + The rest is history
+** FreeBSD
+   + Started from BSD Net-2 (1993)
+     - Tired of waiting for next release of 386BSD
+   + Focus: server environment, commodity-hardware portability
+   + Package management:
+     - Build-on-demand: Ports
+     - Binary: pkgng, pkg (deprecated)
+** FreeBSD - Interesting and Notable
+    + Massively scalable (80+ cores, terrabytes of memory)
+    + High performance
+    + Long-term support and ABI compatibility
+    + Jails
+      - Lightweight, virtualized OS environment
+    + Byhve - BSD Hypervisor
+    + Capsicum enabled by default
+    + DTrace
+    + Network Virtualization
+    + Excellent Linux emulation mode
+      - Run Linux binaries unmodified --- true ABI compat, not a VM
+    + https://www.freebsd.org/features.html
+** FreeBSD - Related Projects
+   + Distributions
+     - PC-BSD
+     - PFSense
+     - OpenSense
+     - HardenedBSD
+   + Forks
+     - DragonFlyBSD (2003)
+     - MidnightBSD
+   + Borrows from FreeBSD
+     - OS X (Darwin) userland
+     - XNU Kernel combining Mach 2.5 and bits from 4.3BSD
+** NetBSD
+   + Started from BSD Net-2 (1993)
+     - Tired of waiting for next release of 386BSD
+     - Preceded FreeBSD by months
+   + "Of course it runs NetBSD"
+   + Focus: clean, portable code, run everywhere
+   + Package management:
+     - Binary: pkgsrc
+     - Build-on-demand: Ports
+   + Interesting and Notable
+     - Portable build framework (facilitate cross-compiling)
+     - Strange and wonderful: Kernel-scripting in Lua
+     - Rump Kernels (@justincormack)
+     - Kyua Automated Testing Framework
+     - pkgsrc
+   + Forks
+     - OpenBSD
+** OpenBSD
+   + Fork of NetBSD (October 18, 1995)
+   + Focus: security
+   + Package management:
+     - Build-on-demand: Ports
+     - Binary: pkg
+   + Interesting and Notable
+     - Code audits
+     - strlcpy and strlcat 
+     - First wide-spread use of ProPolice
+     - W ^ X on generic i386
+     - Crypto everywhere
+     - Twice-yearly releases
+       + Always includes a song and artwork
+       + DVDs always comes with cool stickers
+     - Quick to prune old code
+** OpenBSD - Related Projects
+    + LibreSSL - Fork of OpenSSL
+    + OpenBGPD - Border Gateway Protocol
+    + OpenIKED - Internet Key Exchange (IKEv2)
+    + OpenNTPD - Network Time Protocol (client and server)
+    + OpenSMTPD - SMTP server
+    + OpenSSH - Pretty much de facto ssh client and server
+    + PF - Packet Filter
+    + Carp - Common Address Redundancy Protocol.
+      - Replacement for VRRP and HSRP
+    + doas - Lighter sudo-like utility
+    + Many have portable versions
+** OpenBSD cont
+   + Forks
+     - MirBSD
+     - BitRig
+** MacOS X
+   + Successor to Mac OS 9 and NeXTSTEP
+   + Largest UNIX distribution in the world
+   + Package management:
+     - Build-on-demand: Homebrew, MacPorts, Fink
+     - Binary: Homebrew, archives (.dmg)
+** MacOS X - Interesting and Notable
+   + UI
+   + BSD on the Desktop (and in the handheld)
+   + Userland and POSIX APIs mostly from FreeBSD
+     - Firewall comes from OpenBSD PF
+   + Base for iOS
+   + App store
+   + Grand Central Dispatch
+   + Object-C
+   + clang-llvm development
+   + XCode
+   + Applescript
+** DragonFlyBSD
+   + Fork from FreeBSD (2003)
+   + Package management:
+     + Build-on-demand: Ports
+     + Binary: pkg
+   + Interesting and Notable
+     - VKERNEL - run kernel from userland
+     - HammerFS (snapshot-ing FS, multi-node)
+     - Transparent disk encryption (dm_target_crypt) compatible with Linux' dm-crypt
+** PC-BSD
+   + Distribution of FreeBSD
+   + Focus: desktop and usability
+   + Package management:
+     - Binary: PBI, pkgng
+     - Build-on-demand: Ports
+   + Interesting and Notable
+     - Looks just like any desktop OS, ready to use
+     - Graphical installer
+     - User-friendly tools for cool technologies:
+     - Warden for Jail management
+     - Life Preserver for backups using ZFS snapshots
+     - Including bare-metal restore
+     - Lumina Desktop
+     - Java and Flash <-- not that either is recommended
+** Other - Notable BSDs
+   + FreeNAS - FreeBSD-based NAS appliance
+     - ZFS, Jails and so much more
+   + PFSense - FreeBSD-based firewall, VPN gateway appliance
+   + OpenSense - FreeBSD-based firewall, VPN gateway appliance
+* BSD for Linux Users
+** Unique Features and Technologies
+   + Install on ZFS (FreeBSD)
+     - Snapshot entire OS
+   + clang/llvm
+   + Jails (FreeBSD)
+     - Mature technology
+     - Lighter than VM
+     - Separate IP(s) for Jail
+     - Delegate ZFS to Jail users
+   + PF + CARP
+     - Build high-availability firewall and routing appliances
+** Key Differences - System
+   + Almost universally installed in cli
+     - PC-BSD has graphical installer
+   + Init
+     - No systemd
+     - BSD rc system (/etc/rc.d/<daemon> start|stop|reload|status)
+     - No procfs (emulation on some BSDs via package)
+     - sysctl works via system calls
+   + Kernel
+     - Rarely need to build custom kernel
+     - Most have kernel modules (OpenBSD does not)
+     - Other than security patches, usually upgraded with system
+** Key Differences - System cont
+   + Base OS
+     - The group of programs and utilities that make-up the BSD
+     - Ports and packages are usually developed in step with BSD (ABI compatibility issues)
+       + FreeBSD ports from any major release work with any minor of that release
+   + Upgrading varies by BSD
+     - OpenBSD upgrades base then packages
+       + Two branches: current and stable
+       + Nearly daily snapshots based on current
+     - FreeBSD has freebsd-update for patches, security updates and full upgrades
+       + Can also track development branches
+** Key Differences - Userland
+   + Shell
+     - Default shell tends to be ksh and csh (bash available)
+     - Mostly POSIX or original Unix/BSD implementations
+       + Very few gnu user utils (can be found in packages)
+   + Users
+     - Wheel group for sudoers
+   + Miscellaneous
+     - vi is vi, not vim (packages)
+     - tmux rather than screen (packages)
+   + Install packages:
+     - OpenBSD, NetBSD, DragonFlyBSD: pkg-add <pkg-name>
+     - FreeBSD, DragonFlyBSD: pkg install <pkg-name>
+** Key Differences - License
+   + BSDs are licensed under one of BSD licenses
+     - Great for companies that want to keep some secret sauce
+     - Doesn't mean they do...many give back
+       + Netflix
+       + Verisign
+       + Juniper
+       + Apple
+   + Goal is to get high-quality software into as many hands as possible
+   + Freedom to use code how the end-user wants
+   + This is a war just waiting to happen so let's move on
+** Software Availability
+   + Flash - almost non-existent (PC-BSD)
+   + Enterprise, web and other software
+     - Apache, nginx
+     - MySQL, Maria, Postgres, Memcached, Redis
+     - Puppet, Salt, Chef
+     - Nagios, Wireshark
+     - couchDB, hadoop
+     - Docker containers (FreeBSD docker-freebsd)
+   + Productivity:
+     - FireFox, Chromium
+     - KDE, Gnome, XFCE
+     - LibreOffice, TeX, LaTeX
+   + Dev: practically everything
+   + 25,128 ports in FreeBSD tree
+** Hardware Support
+   + Excellent hardware support in the server room
+     - Multiple CPUs (with or without Hyperthreading)
+     - Support for AES-NI, VT-x, VT-d
+   + Very good support at the desktop
+     - Varies by BSD
+     - PC-BSD/FreeBSD very good
+     - OpenBSD very good
+     - NetBSD 7 looking very good (@justincormack)
+   + Graphic Card Support
+     - Excellent: Intel
+       + DragonFlyBSD very good with latest Intel integrated graphics
+     - Very good: Nvidia, AMD
+       - Excellent Nvidia-maintained drivers for FreeBSD (PC-BSD)
+       - No CUDA dev but perhaps under Linux emulation
+** Hardware Support
+   + Other
+     - USB 3
+     - AHCI (including hotplug)
+     - RAID cards (including HBA cards <- very useful with FreeNAS)
+     - NICs (10 Gig E)
+* Conclusion
+** BSD in Production
+   + AWS
+   + Digital Ocean
+   + Juniper Networks JUNOS
+   + Netflix
+   + ScaleEngine
+   + Tarsnap
+   + Verisign
+   + Whatsapp
+   + More
+     - https://en.wikipedia.org/wiki/List_of_products_based_on_FreeBSD
+     - https://www.freebsdfoundation.org/testimonials
+** BSD in Production
+   + theanimenetwork.com
+     - Ran on OpenBSD until moved to AWS
+     - relayd
+     - Apache 1.3.1 (OpenBSD-maintained version)
+     - MySQL
+** Why Use BSD?
+   + Avoid mono-culture -> Verisign model
+   + Prefer system-as-a-whole development model
+   + ZFS + Jails for process isolation
+     - Much lighter than virtualization
+   + Performance
+     - Netflix doing incredible work on packet pumping
+   + Old hardware that has to continue running
+     - There's probably a version of BSD that runs what you have
+     - https://www.netbsd.org/ports/ (Multiple tiers)
+     - http://www.openbsd.org/plat.html
+     - https://www.freebsd.org/platforms/
+   + You hate systemd ;-)
+** When You Shouldn't Use BSD
+   + Same answer as for Linux: When it's not in the customer's or employer's best interest
+   + Our job as sysadmin, developers and open-source advocates is to meet the customer's need
+   + There are nearly always open source solutions to the customer's problem
+   + Customer has to be able to use and maintain the solution after we're gone
+** Questions
+   + Questions - You have them, I may have answers
+** Contact Details
+#+INCLUDE: "../common/contact.org"
+** Resources
+   + BSDs
+     - http://www.dragonflybsd.org
+     - http://www.netbsd.org
+     - http://www.openbsd.org
+     - http://www.pcbsd.org
+     - https://hardenedbsd.org
+     - https://www.freebsd.org
+   + Appliances
+     - http://www.freenas.org
+     - https://opnsense.org
+     - https://www.pfsense.org
+   + Certification
+     - http://www.bsdcertification.org
+** Resources cont
+   + Technologies
+     - https://github.com/jmmv/kyua
+     - http://lumina-desktop.org
+     - http://open-zfs.org
+     - http://pkgsrc.org
+     - https://wiki.freebsd.org/pkgng
+   + BSD User Groups (BUGs)
+     - http://www.berklix.org/bim/
+     - http://www.capbug.org
+     - http://cobug.org
+     - http://www.metabug.org
+     - http://www.nycbug.org
+   + Conferences
+     - https://www.bsdcan.org/
+     - https://www.eurobsdcon.org
+     - http://www.asiabsdcon.org
+** Resources cont
+   + Presenations, Whitepapers, etc.
+     - http://www.openbsd.org/papers/
+     - https://www.freebsd.org/marketing/
+     - http://www.trustedbsd.org/docs.html
+     - https://www.ixsystems.com/case-studies/
+     - https://www.ixsystems.com/literature/
+     - https://www.ixsystems.com/white-papers/
+   + Training
+     - http://www.freenas.org/freenas-zfs-training/
+     - https://www.ixsystems.com
+     - https://www.mckusick.com/courses/
+     - https://www.pfsense.org/university/
+** Resources cont
+   + Mags, Podcasts and other media
+     + http://bsdmag.org
+     + http://bsdtalk.blogspot.com
+     + http://www.bsdnow.tv
+       - Find Kris Moore at iXsystems booth
+     + https://www.scaleengine.com/
+     + https://www.freebsdfoundation.org/journal
+     + http://undeadly.org
+** Resource cont
+   + Vendors
+     - https://www.ixsystems.com
+     - https://www.freebsdmall.com
+   + Hosting
+     - http://www.digitalocean.com
+     - http://aws.amazon.com
+* License and Credits
+** License and Credits
+#+INCLUDE: "../common/license.org"

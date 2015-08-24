@@ -1,0 +1,25 @@
+*** Introduction - Background                                         :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + Software developer
+      - 17+ years professionally
+      - 30+ otherwise
+      - Security software
+      - Design and implement secure APIs
+    + IT Background
+      - Boeing Aerospace Operations
+      - ISP (dial-up land)
+      - Consulting
+*** Introduction - Background                                         :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + Software Development
+      - PentaSafe Technologies
+      - NetIQ
+      - TheAnimenetwork.com
+      - BRS Labs
+    + CISSP 2005+
+    + BSD user
+    + Amateur radio enthusiast

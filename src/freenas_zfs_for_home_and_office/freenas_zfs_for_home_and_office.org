@@ -1,0 +1,237 @@
+#+TITLE:     FreeNAS - ZFS for Home and Office
+#+AUTHOR:    Aaron Poffenberger
+#+EMAIL:     akp@hypernote.com
+#+DATE:      2015-08-22 Saturday
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+LaTeX_HEADER: \usepackage{fontspec}
+#+LaTeX_HEADER: \setmainfont[Mapping=tex-text]{Times New Roman}
+#+LaTeX_HEADER: \setsansfont[Mapping=tex-text]{Arial}
+#+LaTeX_HEADER: \newfontfamily\greekfont[Script=Greek]{Linux Libertine O}
+#+LaTeX_HEADER: \newfontfamily\greekfontsf[Script=Greek]{Linux Libertine O}
+#+LaTeX_HEADER: \usepackage{polyglossia}
+#+LaTeX_HEADER: \setdefaultlanguage{english}
+#+LaTeX_HEADER: \titlegraphic{\includegraphics{images/freenas-logo.png}}
+
+#+startup: oddeven
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,t]
+#+BEAMER_THEME: Madrid
+#+BEAMER_FRAME_LEVEL: 2
+
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+PROPERTY: BEAMER_col_ALL 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.0 :ETC
+
+
+
+* Introduction
+** Introduction - Background
+#+INCLUDE: "../common/background.org
+* What is FreeNAS?
+** What is FreeNAS
+   + An appliance distribution of FreeBSD focused on Network Attached Storage
+   + Open source --- Free as in beer and free as in speech.
+** Features
+   + Replication
+     - Time Machine
+     - Windows Backup
+     - rsync
+     - PC-BSD Life Preserver
+   + Encryption
+     - Volume encryption (FreeBSD geli)
+     - Uses AES-NI when available
+   + Snapshots
+     - ZFS snapshots (more later)
+   + File Sharing
+   + Web UI
+     - Console and ssh access as well
+   + Plugins
+     - Open specification
+** Features - System Services
+*** Features                                                          :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + File services in base:
+      - Appletalk (netatalk)
+      - CIFS (samba 4.x)
+      - Domain controller (samba 4.x)
+      - Dynamic DNS
+      - FTP
+      - NFS
+      - rsync
+      - WebDAV
+*** Features                                                          :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + Appliance and server services:
+      - S.M.A.R.T.
+      - ssh
+      - tftp
+      - UPS (nut)
+    + Somewhat unexpected:
+      - iSCSI
+      - LLDP
+** Plugins
+***                                                                   :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+    + bacula (server)
+    + couchpotato
+    + gamez
+    + maraschino
+      - XBMC overview page
+    + mylar
+      - comic book downloader
+    + sabnzbd
+    + Transmimssion
+      - BitTorrent client
+***                                                                   :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.5
+    :END:
+    + BitTorrent Sync
+    + CrashPlan
+    + htpc-manager
+    + minidlna
+      - DLNA server
+    + ownCloud
+    + plexmediaserver
+    + sickbeard
+      - PVR for newsgroups
+    + 3rd Party
+* UI Walkthrough
+** Services
+   [[file:images/services.png]]
+** System
+   [[file:images/system.png]]
+** Volumes
+   [[file:images/volumes.png]]
+** Sharing
+   [[file:images/sharing.png]]
+** Plugins
+   [[file:images/plugins.png]]
+** Reporting
+   [[file:images/reporting.png]]
+** Alerts
+   [[file:images/alerts.png]]
+* Why FreeNAS Rather than $NAS
+** Why FreeNAS?
+   + Jails and ZFS
+** Jails
+   + Not mentioned as a feature of FreeNAS but integral
+   + Core to plugin-functionality
+   + Not limited to plugin architecture
+   + What are jails?
+** What are Jails?
+   + Process isolation:
+     - Full OS
+     - Separate network stack
+     - Own users and groups (including root)
+     - Own processes
+     - Unable to access other jails outside of normal network access
+   + More than just chroot
+   + Lighter than full OS virtualization
+   + One kernel to rule them all...
+   + Very mature, appearing in FreeBSD 4.0
+   + Similar to Solaris Containers
+   + More than a Docker container
+** Jails in FreeNAS
+   + Used for plugin-architecture
+   + Each plugin runs in a jail
+   + One ipv4 address per jail
+   + Neat, clean separation between each plugin
+   + Yes, you can run docker-images in a FreeNAS jail
+     - http://www.freenas.org/whats-new/2015/07/docker-done-right.html
+   + http://www.freenas.org/whats-new/2013/04/freenas-plugins-everything-you-ever-wanted-to-know.html
+** What is ZFS?
+   + Not mentioned as a feature of FreeNAS but integral
+   + Combined file system and logical volume manager
+   + Focused on:
+     - Data protection
+     - High (insane) storage capacity
+     - Efficient data compression
+     - Continuous integrity checking and repair
+     - RAID-Z layouts
+     - Native CIFS, NFS and ACLs
+   + Originally ZFS as in Zettabyte File System
+   + Now ZFS as in "last" file system (you'll need)
+   + Cross platform
+     - http://open-zfs.org
+** What is ZFS? - Features
+   + Data Datasets
+     - Partition and mount-point management
+     - Snapshot target
+   + COW - Copy On Write
+   + Snapshots
+   + Metadata
+     - Data about the dataset
+     - User can create metadata
+   + RAID (0,1,10, RAIDZ[1-3])
+     - RAIDZn - number of disks for parity
+     - Hotswap (AHCI or other hotswap hardware)
+   + Replication
+     - zfs end | receive
+     - Save/restore to/from file
+   + File-backed devices
+** Snapshots - So What?
+   + Exact replica of file table at moment in time
+   + Nearly instantaneous, even for large data sets
+   + Recursive
+   + Enabled by COW
+     -Block-level changes only
+   + Conceptually similar to a diff
+     - More flexible since block level
+     - ZFS doesn't need to know file format
+   + Can be aged out (using cron)
+** ZFS in FreeNAS
+   + Heart and primary differentiator of FreeNAS
+   + Used for drive and volume management
+   + Snapshots
+   + Key part of jails
+* Conclusion
+** Is FreeNAS for Home Use?
+   + Yes! And business, SOHO to Enterprise
+   + Numerous sites with servers in the 100s of TBs
+   + Houses like mine
+   + FreeNAS forums chock-a-block with home and SOHO users talking about ITX-based systems
+** Hardware (Minimum) Requirements
+   + Multi-core 64-bit processor
+   + 8 GB boot drive
+     - Thumb drives welcome, encouraged
+   + 8 GB of RAM
+   + At least 1 storage disk
+     - Multiple strongly encouraged
+   + FAQ
+     - Doesn't ZFS require ECC RAM.
+       + No. ECC helps with data integrity in the data center
+       + Nice to hvae
+     - I heard I need 32 GB+ of RAM. Do I?
+       + 32 GB+ is nice because you get more read-caching
+       + 8 GB is enough
+** Questions
+   + Questions - You have them, I may have answers
+** Contact Details
+#+INCLUDE: "../common/contact.org"
+* Resources
+** Resources and Additional Information
+   + http://www.freenas.org
+   + Hardware vendors
+     - http://www.ixsystems.com
+* License and Credits
+** License and Credits
+#+INCLUDE: "../common/license.org"
+   + FreeNAS Logo Copyright iXsystems
+     - http://www.ixsystems.com
