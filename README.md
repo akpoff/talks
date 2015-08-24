@@ -13,7 +13,7 @@ About Making Beamer Slides in Org-mode
 --------------------------------------
 
 I write my talks using [org-mode](http://orgmode.org) and export them
-using [beamer](https://en.wikipedia.org/wiki/Beamer_(LaTeX)). The
+as [beamer](https://en.wikipedia.org/wiki/Beamer_(LaTeX)) slides. The
 process is not difficult. Read the
 [tutorial](http://orgmode.org/worg/exporters/beamer/tutorial.html) on
 the [worg](http://orgmode.org/worg/).
