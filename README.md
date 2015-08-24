@@ -12,7 +12,7 @@ infelicities of grammar, usage, punctuation or facts.
 About Making Beamer Slides in Org-mode
 --------------------------------------
 
-I write my talk using [org-mode](http://orgmode.org) and export them
+I write my talks using [org-mode](http://orgmode.org) and export them
 using [beamer](https://en.wikipedia.org/wiki/Beamer_(LaTeX)). The
 process is not difficult. Read the
 [tutorial](http://orgmode.org/worg/exporters/beamer/tutorial.html) on
@@ -22,12 +22,13 @@ Copyright and License
 ---------------------
 
 Unless noted otherwise in the file itself, the org-mode files, slides
-and images are released under a the Attribution 4.0 International (CC
-BY 4.0) license.
+and images are released under a CC BY 4.0 license ([Attribution 4.0
+International](https://creativecommons.org/licenses/by/4.0/)).
 
 **Note**: There may be content in the talks that's included under
-  [fair use](https://en.wikipedia.org/wiki/Fair_use). I try to
-  document these uses where possible but may miss some.
+  [fair use](https://en.wikipedia.org/wiki/Fair_use) or CC license. I
+  try to document owners. It's on you to know whether you also have a
+  right or license to publish that material.
 
 Updates and Suggestions
 -----------------------
