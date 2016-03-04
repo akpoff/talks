@@ -1,0 +1,100 @@
+#+TITLE:     authpf \\ Houston Area Hackers Association
+#+AUTHOR:    Aaron Poffenberger
+#+EMAIL:     akp@hypernote.com
+#+DATE:      2016-03-03 Thu
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+startup: oddeven
+
+#+LaTeX_CLASS_OPTIONS: [presentation,bigger,t]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_env(Env) %10BEAMER_act(Act) %4BEAMER_col(Col) %8BEAMER_opt(Opt)
+#+PROPERTY: BEAMER_col_ALL 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.0 :ETC
+#+BEAMER_FRAME_LEVEL: 2
+
+
+
+* Introduction
+* What is authpf?
+** What is authpf?
+   + AUTHPF(8) man page:
+     - authpf is a user shell for authenticating gateways. It is used
+       to change pf(4) rules when a user authenticates and starts a
+       session with sshd(8) and to undo these changes when the user's
+       session exits.
+** What are the use case for authpf?
+   + AUTHPF(8) man page:
+     - Typical use would be for a gateway that authenticates users
+       before allowing them Internet use, or a gateway that allows
+       different users into different places. Combined with properly
+       set up filter rules and secure switches, authpf can be used to
+       ensure users are held accountable for their network traffic.
+** Where does it work?
+   + AUTHPF(8) man page:
+     - It is meant to be used with users who can connect via ssh(1)
+       only, and requires the pf(4) subsystem to be enabled.
+* What is pf?
+** What is pf?
+   + PF(4) is the stateful firewall built into OpenBSD and ported to
+     several other BSDs including Mac OS X.
+   + It has a simple grammar that's very powerful and easy to write
+     rules in.
+#+BEGIN_SRC bash
+   # $OpenBSD: pf.conf,v 1.54 2014/08/23 05:49:42 deraadt Exp $
+   #
+   # See pf.conf(5) and /etc/examples/pf.conf
+
+   set skip on lo
+
+   block return    # block stateless traffic
+   pass            # establish keep-state
+   pass on enc0
+
+   # By default, do not permit remote connections to X11
+   block return in on ! lo0 proto tcp to port 6000:6010
+#+END_SRC
+* Configuring your server to work with authpf
+** Configuring your server to work with authpf
+   + Create a user and set their shell to /usr/sbin/authpf
+   + Add simple rules to /etc/pf.conf
+#+BEGIN_SRC bash
+   # rules for authpf
+   table <authpf_users> persist
+
+   pass in quick on egress inet proto tcp from <authpf_users> \
+       to port $mail_ports rdr-to lo0
+#+END_SRC
+   + Reload rules: pfctl -f /etc/pf.conf
+* Demo
+** Demo  
+* Why not use a VPN?
+** Why not use a VPN?
+   + No special software required
+     - At least for *nix-based systems, or perhaps BSD, ssh is already
+       installed
+   + authpf is not necessarily an inbound port lock/unlock tool
+     - Can be used for outbound port blocking
+     - http(s)
+     - telnet
+     - ftp
+   + Quick to setup, at least on an OpenBSD box
+* Questions
+** Questions
+   + Questions - You have them, I may have answers
+** Contact Details
+#+INCLUDE: "../common/contact.org"
+** Links
+   + [[http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man8/authpf.8?query=authpf][authpf man page]]
+   + [[http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man4/pf.4?query=pf&sec=4][pf man page]]
+   + [[http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf&sec=5][pf.conf man page]]
+* License and Credits
+** License and Credits
+#+INCLUDE: "../common/license.org"

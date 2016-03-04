@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>authpf // Houston Area Hackers Association</title>
+<!-- 2016-03-03 Thu 18:56 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Aaron Poffenberger" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">authpf // Houston Area Hackers Association</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Introduction</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Introduction - Background</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. What is authpf?</a>
+<ul>
+<li><a href="#sec-2-1">2.1. What authpf?</a></li>
+<li><a href="#sec-2-2">2.2. What's the use case for authpf?</a></li>
+<li><a href="#sec-2-3">2.3. Where does it work?</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. What is pf?</a>
+<ul>
+<li><a href="#sec-3-1">3.1. What is pf?</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Configuring authpf to work with pf</a>
+<ul>
+<li><a href="#sec-4-1">4.1. Configuring authpf to work with pf</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5. Demo</a></li>
+<li><a href="#sec-6">6. Questions</a>
+<ul>
+<li><a href="#sec-6-1">6.1. Questions</a></li>
+<li><a href="#sec-6-2">6.2. Contact Details</a></li>
+<li><a href="#sec-6-3">6.3. Links</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7. License and Credits</a>
+<ul>
+<li><a href="#sec-7-1">7.1. License and Credits</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Introduction - Background</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><ol class="org-ol"><li><a id="sec-1-1-1" name="sec-1-1-1"></a>Introduction - Background&#xa0;&#xa0;&#xa0;<span class="tag"><span class="BMCOL">BMCOL</span></span><br  /><div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>Software developer
+<ul class="org-ul">
+<li>17+ years professionally
+</li>
+<li>30+ otherwise
+</li>
+<li>Security software
+</li>
+<li>Design and implement secure APIs
+</li>
+</ul>
+</li>
+<li>IT Background
+<ul class="org-ul">
+<li>Boeing Aerospace Operations
+</li>
+<li>ISP (dial-up land)
+</li>
+<li>Consulting
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-1-2" name="sec-1-1-2"></a>Introduction - Background&#xa0;&#xa0;&#xa0;<span class="tag"><span class="BMCOL">BMCOL</span></span><br  /><div class="outline-text-4" id="text-1-1-2">
+<ul class="org-ul">
+<li>Software Development
+<ul class="org-ul">
+<li>PentaSafe Technologies
+</li>
+<li>NetIQ
+</li>
+<li>TheAnimenetwork.com
+</li>
+<li>BRS Labs
+</li>
+</ul>
+</li>
+<li>CISSP 2005+
+</li>
+<li>BSD user
+</li>
+<li>Amateur radio enthusiast
+</li>
+</ul>
+</div>
+</li></ol>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> What is authpf?</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> What authpf?</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>AUTHPF(8) man page:
+<ul class="org-ul">
+<li>authpf is a user shell for authenticating gateways. It is used
+to change pf(4) rules when a user authenticates and starts a
+session with sshd(8) and to undo these changes when the user's
+session exits.
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> What's the use case for authpf?</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>AUTHPF(8) man page:
+<ul class="org-ul">
+<li>Typical use would be for a gateway that authenticates users
+before allowing them Internet use, or a gateway that allows
+different users into different places. Combined with properly
+set up filter rules and secure switches, authpf can be used to
+ensure users are held accountable for their network traffic.
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Where does it work?</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>AUTHPF(8) man page:
+<ul class="org-ul">
+<li>It is meant to be used with users who can connect via ssh(1)
+only, and requires the pf(4) subsystem to be enabled.
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> What is pf?</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> What is pf?</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>PF(4) is the stateful firewall built into OpenBSD and ported to
+several other BSDs including Mac OS X.
+</li>
+<li>It has a simple grammar that's very powerful and easy to write
+rules in.
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-cfg">#       $OpenBSD: pf.conf,v 1.54 2014/08/23 05:49:42 deraadt Exp $
+#
+# See pf.conf(5) and /etc/examples/pf.conf
+
+set skip on lo
+
+block return    # block stateless traffic
+pass            # establish keep-state
+pass on enc0
+
+# By default, do not permit remote connections to X11
+block return in on ! lo0 proto tcp to port 6000:6010
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Configuring authpf to work with pf</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Configuring authpf to work with pf</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>Create a user and set their shell to /usr/sbin/authpf
+</li>
+<li>Add simple rules to /etc/pf.conf
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-cfg"># rules for authpf
+table &lt;authpf_users&gt; persist
+
+pass in quick on egress inet proto tcp from &lt;authpf_users&gt; \
+    to port $mail_ports rdr-to lo0
+</pre>
+</div>
+<ul class="org-ul">
+<li>Reload rules: pfctl -f /etc/pf.conf
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Demo</h2>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Questions</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Questions</h3>
+<div class="outline-text-3" id="text-6-1">
+<ul class="org-ul">
+<li>Questions - You have them, I may have answers
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> Contact Details</h3>
+<div class="outline-text-3" id="text-6-2">
+<ul class="org-ul">
+<li>Aaron Poffenberger
+</li>
+<li>akp@hypernote.com
+</li>
+<li><a href="http://akpoff.com">http://akpoff.com</a>
+</li>
+<li><a href="https://twiter.com/akpoff">@akpoff</a>
+</li>
+<li>This presentation, note on <a href="http://akpoff.com">http://akpoff.com</a>
+</li>
+<li>KG5DQJ
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> Links</h3>
+<div class="outline-text-3" id="text-6-3">
+<ul class="org-ul">
+<li><a href="http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man8/authpf.8?query=authpf">authpf man page</a>
+</li>
+<li><a href="http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man4/pf.4?query=pf&sec=4">pf man page</a>
+</li>
+<li><a href="http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf&sec=5">pf.conf man page</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> License and Credits</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> License and Credits</h3>
+<div class="outline-text-3" id="text-7-1">
+<ul class="org-ul">
+<li>Copyright Aaron Poffenberger
+</li>
+<li>Attribution 4.0 International (CC BY 4.0)
+<ul class="org-ul">
+<li><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-03-03 Thu&gt;</span></span></p>
+<p class="author">Author: Aaron Poffenberger</p>
+<p class="date">Created: 2016-03-03 Thu 18:56</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
