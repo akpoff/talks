@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Aaron Poffenberger" />
+  <title>SMS OTP is not Secure Two Factor Authentication! Now what?</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">SMS OTP is not Secure Two Factor Authentication! Now what?</h1>
+<h1 class="subtitle">Resources</h1>
+<h2 class="author">Aaron Poffenberger</h2>
+<h3 class="date">BSidesDFW 2016-11-05</h3>
+</div>
+<h1 id="resources">Resources</h1>
+<ul>
+<li>Very select and incomplete list of resources</li>
+<li>Google is your friend</li>
+<li>InfoSec people are your friends</li>
+</ul>
+<h1 id="short-message-service-specification">Short Message Service Specification</h1>
+<ul>
+<li><a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=747">Specification</a></li>
+<li><a href="https://en.wikipedia.org/wiki/A5/1">A5/1 Stream Cipher (54-bit)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/A5/2">A5/2 Stream Cipher (the weaker version of A5/2)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/KASUMI">A5/3 &quot;Kasumi&quot; block cipher (better but not great)</a></li>
+</ul>
+<h1 id="intercepting-sms-messages">Intercepting SMS Messages</h1>
+<ul>
+<li><a href="http://genius.it/motherboard.vice.com/de/read/exklusiv-wie-das-bka-telegram-accounts-von-terrorverdaechtigen-knackt">Lawful intercept</a>
+<ul>
+<li><a href="https://twitter.com/RidT/status/769234433895522308">Thomas Rid's Summary Tweet</a></li>
+</ul></li>
+<li><a href="https://www.youtube.com/watch?v=qPPWQbGTptQ">Hacking WhatsApp using SS7 - Live Demo</a>
+<ul>
+<li><a href="https://www.theguardian.com/technology/2016/apr/19/ss7-hack-explained-mobile-phone-vulnerability-snooping-texts-calls">Guardian article explaining SS7 hack</a></li>
+<li><a href="http://blog.drhack.net/whatsapp-telegram-hacking-demo-live-ss7-vulnerability/">Explaination of the live demo the SS7 hack</a></li>
+</ul></li>
+<li><a href="https://julianoliver.com/output/stealth-cell-tower">Rogue Cellular Infrastructure Disguised as Office Printer</a></li>
+<li><a href="http://www.theregister.co.uk/2016/10/23/every_lte_call_text_can_be_intercepted_blacked_out_hacker_finds/">New Attack Allows Intercepting or Blocking of Every LTE Phone Call And Text</a></li>
+<li><a href="http://www.slideshare.net/slideshow/embed_code/key/Ez63bGDQrP6EPY">Slides from Ruxcon presentation</a></li>
+</ul>
+<h1 id="social-engineering-and-identity-theft">Social Engineering and Identity Theft</h1>
+<ul>
+<li><a href="https://www.ftc.gov/news-events/blogs/techftc/2016/06/your-mobile-phone-account-could-be-hijacked-identity-thief">Your mobile phone account could be hijacked by an identity thief</a></li>
+<li><a href="https://medium.com/internet-creators-guild/getting-hacked-as-an-internet-creator-982d03637e86">Getting Hacked As An Internet Creator</a></li>
+<li><a href="https://tech.vijayp.ca/adding-a-phone-number-to-your-google-account-can-make-it-less-secure-f1cc7280ff6a">Adding a phone number to your Google account can make it LESS secure</a></li>
+</ul>
+<h1 id="rfcs-and-standards">RFCs and Standards</h1>
+<ul>
+<li><a href="http://nstic.blogs.govdelivery.com/2016/05/08/announcing-draft-special-publication-800-63-3-digital-authentication-guideline/">Draft Special Publication 800-63-3: Digital Authentication Guideline</a></li>
+<li><a href="https://tools.ietf.org/html/rfc2104">RFC 2104 - HMAC</a></li>
+<li><a href="https://tools.ietf.org/html/rfc4226">RFC 4226 - HOTP</a></li>
+<li><a href="https://tools.ietf.org/html/rfc6238">RFC 6238 - TOTP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Hash-based_message_authentication_code">Wikipedia Explanation of HMAC</a></li>
+<li><a href="https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_Algorithm">Wikipedia Explanation of HOTP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm">Wikipedia Explanation of TOTP</a></li>
+</ul>
+<h1 id="totphotp-clients">TOTP/HOTP Clients</h1>
+<ul>
+<li><a href="https://www.authy.com/">Authy</a></li>
+<li><a href="https://github.com/google/google-authenticator">Google Authenticator</a></li>
+<li><a href="https://github.com/w8rbt/oathgen">oathgen - A command line HOTP and TOTP client</a></li>
+<li><a href="http://www.nongnu.org/oath-toolkit/">OATH Toolkit</a></li>
+</ul>
+<h1 id="totphotp-libraries">TOTP/HOTP Libraries</h1>
+<ul>
+<li><a href="https://github.com/google/google-authenticator">C/C++ - Google Authenticator</a></li>
+<li><a href="https://sourceforge.net/projects/rcdevs-openotp/">C/C++ - OpenOTP</a></li>
+<li><a href="https://github.com/jennings/OATH.Net">C# - OATH.NET</a></li>
+<li><a href="https://github.com/kappa7194/otp">C# - OTP</a></li>
+<li><a href="https://hackage.haskell.org/package/one-time-password">Haskell - One Time Password</a></li>
+<li><a href="https://github.com/kamranzafar/libotp">Java - libotp</a></li>
+<li><a href="https://github.com/johnnymongiat/oath">Java - oath</a></li>
+<li><a href="https://github.com/jiangts/JS-OTP">Javascript - JS-OTP</a></li>
+</ul>
+<h1 id="totphotp-libraries-cont.">TOTP/HOTP Libraries (cont.)</h1>
+<ul>
+<li><a href="https://github.com/speakeasyjs/speakeasy">Node.js - speakeasy</a></li>
+<li><a href="http://search.cpan.org/dist/Authen-OATH/lib/Authen/OATH.pm">Perl - Authen::OATH</a></li>
+<li><a href="https://github.com/pyotp/pyotp">Python - pyotp</a></li>
+<li><a href="https://pypi.python.org/pypi/oath">Python - oath</a></li>
+<li><a href="https://github.com/lelag/otphp">php - otphp</a></li>
+<li><a href="https://github.com/eloquent/otis">php - Otis</a></li>
+<li><a href="https://github.com/mdp/rotp">Ruby - rotp</a></li>
+</ul>
+</body>
+</html>
