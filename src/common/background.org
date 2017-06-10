@@ -3,7 +3,7 @@
     :BEAMER_col: 0.5
     :END:
     + Software developer
-      - 17+ years professionally
+      - 19+ years professionally
       - 30+ otherwise
       - Security software
       - Design and implement secure APIs
@@ -16,10 +16,11 @@
     :BEAMER_col: 0.5
     :END:
     + Software Development
-      - PentaSafe Technologies
+      - ExxonMobil
+      - BRS Labs/Giant Gray
+      - TheAnimeNetwork.com
       - NetIQ
-      - TheAnimenetwork.com
-      - BRS Labs
+      - PentaSafe Technologies
     + CISSP 2005+
     + BSD user
     + Amateur radio enthusiast

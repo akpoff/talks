@@ -1,0 +1,103 @@
+#+TITLE:     OpenSMTPD for the Real World
+#+SUBTITLE:  BSDCan -- Cheat Sheet
+#+DATE:      2017-06-07 Wed
+#+AUTHOR:    Aaron Poffenberger
+#+EMAIL:     akp@hypernote.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:t p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:nil todo:t |:t
+#+CREATOR: Emacs 24.5.1 (Org mode 8.2.10)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+
+* ssl
+** Documentation: ssl(8)
+#+BEGIN_SRC bash
+   man ssl
+#+END_SRC
+** Create Self-Signed Certificate
+#+BEGIN_SRC bash
+   # cd $ETC/ssl
+   cd /etc/ssl
+
+   # Generate RSA Certificate
+   openssl genrsa -out private/server.key 2048
+
+   # Generate Certificate Signing Request (CSR)
+   openssl req -new -key private/server.key \
+    -out private/server.csr
+
+   # Self-sign CSR
+   openssl x509 -sha256 -req -days 365 \
+   -in private/server.csr \
+   -signkey private/server.key \
+   -out /etc/ssl/server.crt
+#+END_SRC
+* smtpctl
+** Documentation - smtpctl(8)
+#+BEGIN_SRC bash
+   man smtpctl
+#+END_SRC
+** Encrypt Password for Use with /auth/ Command
+#+BEGIN_SRC bash
+   smtpctl password
+#+END_SRC
+** Logging
+#+BEGIN_SRC bash
+   # minimal logging
+   smtpctl log brief
+
+   # verbose logging
+   smtpctl log verbose
+#+END_SRC
+** Show
+#+BEGIN_SRC bash
+   # show queue messages
+   smtpctl show queue
+   ebc3909d5c70e447|local|mda|auth|test_user@example.com|user@mail.example.org|\
+   user@mail.example.org|1465371066|1465716666|0|10|pending|765|\
+   "smtpd: Delivery error: 550 5.1.0 id=12326-07 - Rejected by \
+   next-hop MTA on relaying, from MTA(smtp:[127.0.0.1]:10025): \
+   550 Invalid recipient"
+
+   # show envelope
+   smtpctl show ebc3909d5c70e447
+#+END_SRC
+** Trace /subsystem/
+#+BEGIN_SRC bash
+   # (aliases/virtual/forward expansion)
+   smtpctl trace expand
+
+   # (matched by incoming session)
+   smtpctl trace rules
+
+   # (incoming sessions)
+   smtpctl trace smtp
+
+   # alternatively
+   smtpd -dvT expand -T rules -T smtp
+#+END_SRC
+* smtpd
+** Documentation - smtpd(8)
+#+BEGIN_SRC bash
+   man smtpd
+#+END_SRC
+** Check Configuration
+#+BEGIN_SRC bash
+   smtpd -nf /etc/mail/smtpd.conf
+#+END_SRC
+** Start in Foreground
+#+BEGIN_SRC bash
+   # with verbose logging
+   smtpd -dv
+
+   # with some tracing
+   smtpd -dvT expand -T rules -T smtp
+
+   # with all tracing
+   smtpd -dvT all
+#+END_SRC

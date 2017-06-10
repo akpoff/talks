@@ -1,0 +1,10 @@
+# tables(5) - Userinfo tables
+#
+# format:
+#   username uid:gid:/path_to_virtual_user_maildir
+# N.B. - typically uid:gid of dovecot daemon
+#
+# replace uid:gid below with correct values
+
+user1           518:518:/home/vmail/user1
+user2           518:518:/home/vmail/user2

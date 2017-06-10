@@ -1,0 +1,11 @@
+#
+SHELL=/bin/sh
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/root/bin
+HOME=/var/log
+# MAILTO=Your email address
+#
+#minute hour    mday    month   wday    command
+#
+# <snip>
+@hourly                                 sleep $((RANDOM \% 1800)) && /usr/local/sbin/bgp-spamd.black.sh
+@daily                                  /root/bin/spf_update_pf

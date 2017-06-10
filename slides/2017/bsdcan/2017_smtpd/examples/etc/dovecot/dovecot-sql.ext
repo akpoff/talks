@@ -1,0 +1,34 @@
+driver = sqlite
+connect = /etc/mail/smtp.sqlite
+default_pass_scheme = BLF-CRYPT
+
+# Table schema
+# Same schema as used by OpenSMTPD
+#CREATE TABLE credentials (
+#    id INTEGER PRIMARY KEY AUTOINCREMENT,
+#    email VARCHAR(255) NOT NULL,
+#    password VARCHAR(255) NOT NULL
+#);
+
+
+# Password queries
+# User must exist
+password_query = SELECT username, password \
+  FROM credentials \
+  WHERE username = '%n'
+
+# User queries
+# User must exist
+# Forces UID and GID to the _dovecot user found on OpenBSD
+# Set to the UID and GID of your _dovecot user
+# Order modify the 
+user_query = SELECT maildir as home, 518 AS uid, 518 AS gid \
+  FROM userinfo
+  WHERE username = '%n';
+
+# For use with table that specifies UID and GID
+#user_query = SELECT maildir as home, uid, gid \
+#  FROM userinfo
+#  WHERE username = '%n';
+
+iterate_query = SELECT username FROM userinfo
