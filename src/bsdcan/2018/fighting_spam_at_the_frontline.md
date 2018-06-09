@@ -102,7 +102,7 @@ For the purposes of (mostly) automated blocking at the MTA, the following are no
 
 + Opt-out marketing mail your users get when joining a website
 
-+ Political diatribes from crazy uncle Joe
++ Political junk from uncle Joe
 
 In short, email is not spam just because the recipient doesn't like it or finds it annoying.
 
@@ -129,12 +129,12 @@ Whitelisting
 In the Beginning was the Blacklist
 ==========================
 
-+ Not really
+Not really
 
-    In the beginning we accepted email from anyone . . . and gladly
-    forwarded on their behalf.
++ In the beginning we accepted email from anyone . . . and gladly
+   forwarded on their behalf.
 
-    That didn’t last long.
+   That didn’t last long.
 
 + Rise of real-time blacklists (SpamHaus, et al.)
 
@@ -191,7 +191,7 @@ Greylisting
        permanent.
 
     - Some large senders (ahem, Google) send from more than one
-       IP address. Most do not use IP affinity. I.e., they don’t resend
+       IP address. Most do not practice IP affinity, *i.e.,* they don’t resend
        from the same IP address that recently failed.
 
 
@@ -199,11 +199,16 @@ Greylisting
 What's Changed to Make X-listing Viable?
 ================================
 
-+ Not much
+Not much:
 
 + Well, there is SPF
 
-+ And spammers still spam from compromised IP addresses
++ Immense consolidation in the number of domains handling
+   their own email
+
+And:
+
++ Spammers still spam from compromised IP addresses
 
 + And do a lot of other bad things from those same IP addresses
 
@@ -231,15 +236,16 @@ include SPF records of other domains
 Why Does Specifying the Sending IPs or Hosts Matter?
 ======================================
 
+20 years ago MX records usually indicated send and receive.
+Today none of the major mail domains use MX hosts to send
+email.
+
 + SPF records are like MX records but for outbound mail
 
 + If I have a canonical record specifying which IPs or hosts will be
    sending email for a give domain, I can build a better whitelist
 
-+ Fun fact:
-
-    > Many domains don’t send from the same hosts that
-    > receive email
++ and automate the process
 
 
 
@@ -260,10 +266,10 @@ Yes, yes indeed.
 =======
 
 Collection of utilities to recursively look-up SPF records and manage
-whitelists
+whitelists:
 
 + Initial release during BSDCan 2016 as part of the
-   “OpenSMTPD for the Real World Tutorial”.
+   “OpenSMTPD for the Real World Tutorial”
 
 Features:
 
@@ -288,7 +294,7 @@ Features:
 
 + Imported into spmtpctl(8) as `smtpctl spf walk`.
 
-   (I maintain the standalone version.)
+   (I maintain the standalone version. See Links slide.)
 
 + Same core features as `spf_fetch`
 
@@ -308,7 +314,11 @@ Example
   2a00:1450:4000::/36
   2c0f:fb50:4000::/36
 ```
+
+Or:
+
 + `echo google.com | smtpctl spf walk`
+
 + `spf_fetch google.com`
 
 
@@ -320,6 +330,8 @@ How Do I Put All this Together to Prevent Spam?
 + Build Whitelists
 
 + Build Blacklists
+
++ Test
 
 + Automate
 
@@ -334,10 +346,10 @@ Step 1: Configure Firewall
 
     Prevents missed email from our known-good list
 
-+ Expire blacklisted IPs regularly:
++ Expire blacklisted IPs regularly
 
-    Be conservative about blacklisting. 24 hours is usually long enough, especially when mining from logs.
-    You don't want to blacklist forever an IP that might move to another host later.
+Be conservative about blacklisting. 24 hours is usually long enough, especially when mining from logs.
+You don't want to blacklist forever an IP that might move to another host later.
 
 
 
@@ -346,12 +358,12 @@ Step 2: Whitelist Known Good Mailers
 
 Who are the known good mailers?
 
-+ For our purposes, mailers who play by the rules:
+For our purposes, mailers who play by the rules:
 
-    - It's a timey-wimey, I know one when I see one kind of thing
++ It's a timey-wimey, I know one when I see one, kind of thing
 
-    - Mostly large, well-established players like Gmail, Microsoft,
-       Fastmail, and yes, Yahoo
++ Mostly large, well-established players like Gmail, Microsoft,
+   Fastmail, and yes, Yahoo
 
 
 
@@ -397,6 +409,9 @@ Who are the bad actors?
 Step 3a: Trusted Blacklists
 ====================
 
+Find your favorite, but note, you probably shouldn't have
+to pay for a good list:
+
 + NixSpam
 
 + bgp-spamd
@@ -405,8 +420,7 @@ Step 3a: Trusted Blacklists
 
    Run by Peter Hessler with input from trusted sources like Pitr Hansteen
 
-+ Find your favorite, but note, you probably shouldn't have
-   to pay for a good list
++ Numerous others
 
 
 
@@ -419,13 +433,13 @@ Spammers don't just spam from a given address. They also use compromised machine
 for other activity like finding ssh daemons that allow root logins, and for hunting for admin
 sites for common web apps.
 
-+ Mine log files for IP addresses engaged in other bad behavior:
+Mine log files for IP addresses engaged in other bad behavior:
 
-    - httpd logs
++ httpd logs
 
-    - ssh logs
++ ssh logs
 
-    - Other logs
++ Other logs
 
 
 
@@ -449,7 +463,6 @@ Scan logs looking failed requests:
     - tmUnblock.cgi (Cisco/Linksys routers)
 
 Should anyone outside your firewall be requesting these urls? Probably not.
-Makes them a good candidate for temporary blacklisting.
 
 **Remember:** If your firewall rules are setup correctly, whitelisted senders will
 still be able to send.
@@ -480,7 +493,27 @@ via ssh?
 
 
 
-Step 4: Automate with **cron(8)**
+Step 4: Test
+=========
+
++ Whitelists are mostly safe since they grant immediate access to the MTA
+
++ Blacklists can cause trouble, but again, if the firewall is configured so
+   that whitelisted IPs always pass, little trouble to be expected
+
++ Greylisting is mostly safe, but ...
+
++ Be sure to monitor logs:
+
+   - Use cron to mail list of whitelisted IPs to mail admin
+
+   - Use cron to mail list of blacklisted IPs to mail admin
+
+   - `pfctl -t <table> -T show` is your friend
+
+
+
+Step 5: Automate with **cron(8)**
 ==========================
 
 + Add scripts to crontab(1)
@@ -489,7 +522,7 @@ Step 4: Automate with **cron(8)**
 
 
 
-Step 5: Share X-Lists Among Servers (as Necessary)
+Step 6: Share X-Lists Among Servers (as Necessary)
 ========================
 
 `bgp-spamd` is an excellent example of how to distribute lists among
@@ -504,7 +537,7 @@ If not, the basics are pretty easy to learn.
 Isn't there a Risk of Blocking Legitimate Senders?
 ==========
 
-Not really?
+Not really.
 
 Are Google, Microsoft, FastMail, or Hypernote (my domain) likely to
 connect to your sshd instance trying to login as root, or anyone for that
@@ -554,28 +587,7 @@ Other Interesting Options
 
    - Postfix specific :(
 
-+ Post-MTA frameworks like Amavasd-new and Rspamd offer many of the same feature
-
-
-
-Is It Effective?
-===========
-
-Yes, very.
-
-Hypernote.com:
-
-+ Registered in 1995
-
-+ My primary email, [akp@hypernote.com](mailto:akp@hypernote.com), in use since 1995
-
-+ On every spam list known to spammer-kind
-
-+ My primary email, [akp@hypernote.com](mailto:akp@hypernote.com), is the domain catchall
-
-+ Typically receive 0 to 3 spams per week, occassionally peaks at 5
-
-That said, the plural of anecdote is not data.
++ Post-MTA frameworks like Amavisd-new and Rspamd offer many of the same feature
 
 
 
@@ -603,6 +615,27 @@ DMARC is the "Domain-based Message Authentication, Reporting and Conformance" sy
 
 
 
+Is It Effective?
+===========
+
+Yes, very.
+
+Hypernote.com:
+
++ Registered in 1995
+
++ My primary email, [akp@hypernote.com](mailto:akp@hypernote.com), in use since 1995
+
++ On every spam list known to spammer-kind
+
++ My primary email, [akp@hypernote.com](mailto:akp@hypernote.com), is the domain catchall
+
++ Typically receive 0 to 3 spams per week, occassionally peaks at 5
+
+That said, the plural of anecdote is not data.
+
+
+
 Analytics
 =======
 
@@ -614,6 +647,13 @@ Analytics
 + Testing some ideas for counting denied connections vs actual connections
 
 + "Stand back! This may require code." But maybe not.
+
+
+
+Where's the Code
+==============
+
+Most of it is in `spf_fetch` (see Links slide)
 
 
 
@@ -655,61 +695,14 @@ Contact
 Links
 ====
 
-+ [Postscreen](http://www.postfix.org/POSTSCREEN_README.html)
-
-+ [Greylisting](https://en.wikipedia.org/wiki/Greylisting)
++ [bgp-spamd](https://bgp-spamd.net/)
 
 + [Greylisting Whitepaper](http://projects.puremagic.com/greylisting/whitepaper.html)
 
-+ [spamd(8) in OpenBSD 3.5](https://www.openbsd.org/35.html)
++ [Postscreen](http://www.postfix.org/POSTSCREEN_README.html)
 
-+ [LMTP](https://tools.ietf.org/html/rfc2033)
++ [`spf_fetch'](https://github.com/akpoff/spf_fetch)
 
 + [Gilles Chehade Blog Post Announcing `spfwalk`](https://poolp.org/posts/2018-01-08/spfwalk/)
 
 + [Standalone `spfwalk`](https://github.com/akpoff/spfwalk)
-
-+ [`spf_fetch'](https://github.com/akpoff/spf_fetch)
-
-+ [bgp-spamd](https://bgp-spamd.net/)
-
-
-
-Mine Junk/Spam Folders
-========================
-
-Identify one or more users you trust to properly tag messages (i.e., move to Junk)
-and mine the headers for IP addresses.
-
-Danger, Will Robinson, Danger!
-
-Less risky: Mine emails that are both in Junk *AND* marked 'Read'.
-
-(See script: `remove_spam_senders`)
-
-
-
-Outline
-======
-
-+ Thanks
-+ Introduction
-+ Origin of talk
-+ Spam definition
-+ Some of the tools and techniques we’ll look at:
-    - MTA-specific features like postscreen
-    - Using SPF records to whitelist well-known senders
-    - Using the mail logs to whitelist outbound recipient domains
-    - Integrating feedback from SpamAssassin
-    - Using log files to identify bad actors
-    - Effectiveness of third-party lists
-+ Sharing lists via bgpd
-+ Choosing an MTA
-+ Questions
-+ Credits
-+ Links
-
-Stuff
-=====
-
-egrep -l 'bruteforce show|bruteforce -T show' * | xargs cat | more
