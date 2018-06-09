@@ -1,8 +1,9 @@
 ---
 title: Fighting Spam at the Frontline
 subtitle: Using DNS, Log Files and Other Tools in the Fight Against Spam
-date: 2016-11-06T19:55:00Z
+date: 2018-06-09T18:30:00Z
 author: Aaron Poffenberger
+institute: akp@hypernote.com
 email: akp@hypernote.com
 tags: email spam
 ---
@@ -27,7 +28,7 @@ Aaron Poffenberger
 
 + Software developer 20+ years
 
-+ OpenBSD user
++ OpenBSD user since ~3.2
 
 + Mail Server admin 20+ years
 
@@ -48,7 +49,8 @@ Origin of Talk
 
 + pf(4)
 
-+ SPF
++ Experience developing BSDCan tutorial
+   "OpenSMTPD for the Real World"
 
 
 
@@ -56,6 +58,10 @@ The Goal
 =======
 
 Reduce spam:
+
++ Block at or before the MTA
+
++ Avoid content analysis
 
 + Allow “legitimate” senders to connect
 
@@ -72,7 +78,7 @@ Reduce spam:
 Definitions
 ========
 
-Let's start with some definitions so we're on the same sheet of music.
+Let's start with some definitions.
 
 
 
@@ -292,7 +298,7 @@ Example
 =======
 
 ```
-  $ echo google.com | smtpctl spf walk # spfwalk | spf_fetch
+  $ spfwalk google.com
 
   172.217.0.0/19
   172.217.32.0/20
@@ -302,22 +308,43 @@ Example
   2a00:1450:4000::/36
   2c0f:fb50:4000::/36
 ```
++ `echo google.com | smtpctl spf walk`
++ `spf_fetch google.com`
 
 
-
-How Do I Put All this Together to Prevent Spam
+How Do I Put All this Together to Prevent Spam?
 =============================
 
++ Configure firewall
+
 + Build Whitelists
+
 + Build Blacklists
-+ Implement firewall rules
+
++ Automate
+
++ Share lists among related servers
 
 
 
-Step 1: Whitelist Known Good Mailers
+Step 1: Configure Firewall
+===========
+
++ As noted, whitelists should always win
+
+    Prevents missed email from our known-good list
+
++ Expire blacklisted IPs regularly:
+
+    Be conservative about blacklisting. 24 hours is usually long enough, especially when mining from logs.
+    You don't want to blacklist forever an IP that might move to another host later.
+
+
+
+Step 2: Whitelist Known Good Mailers
 ==========
 
-+ Who are the known good mailers?
+Who are the known good mailers?
 
 + For our purposes, mailers who play by the rules:
 
@@ -326,9 +353,14 @@ Step 1: Whitelist Known Good Mailers
     - Mostly large, well-established players like Gmail, Microsoft,
        Fastmail, and yes, Yahoo
 
-    - I currently have ~140 domains
 
-+ And anyone we else we know we don't want to miss emails from
+
+Step 2a: Common Domains
+=====================
+
+Currently ~140 domains `spf_fetch` `common_domains` list
+
++ Add other domains we don't want to miss emails from
 
 + Whitelists from other sources:
 
@@ -336,47 +368,68 @@ Step 1: Whitelist Known Good Mailers
 
 
 
-Step 2: Watch for Outbound Mail and Add spfwalk'd Domains to Whitelist
+Step 2b: Watch for Outbound Mail and Add spfwalk'd Domains to Whitelist
 ======================
 
 + `spf_mta_capture` from my `spf_fetch` project is a good example script for
     monitoring `/var/log/maillog` for domains users send to
 
-+ Domains that appear frequently could be added to the list of "Known Good Mailer"
++ Domains that appear frequently could be added to the list of "Known Good Mailers"
 
 
 
 Step 3: Blacklist Known Bad Actors
-========================
+===========================
 
-There are numerous lists of known bad actors.
+Who are the bad actors?
+
++ For our purposes, mailer who don't play by the rules:
+
+    - Blacklisted by trustworthy sources
+
+    - Send email to spamtrap addresses
+
+    - Attempt to access resources that don't exist and they probably shouldn't
+       be accessing anyway
+
+
+
+Step 3a: Trusted Blacklists
+====================
 
 + NixSpam
 
 + bgp-spamd
 
-+ Find your favorite, but note, you probably don't have to pay for a list
+   Very cool use of bgp protocol to distribute known good and bad IP addresses
+
+   Run by Peter Hessler with input from trusted sources like Pitr Hansteen
+
++ Find your favorite, but note, you probably shouldn't have
+   to pay for a good list
 
 
 
-Step 4: Log File Mining for Bad Actors
+Step 3b: Log File Mining for Bad Actors
 ==========
 
-Theory
+**Theory**
 
-:    spammers don't just spam from a given address. They also use compromised machines
-     for other activity like finding ssh daemons that allow root logins, and for hunting for admin
-     sites for common web apps.
+Spammers don't just spam from a given address. They also use compromised machines
+for other activity like finding ssh daemons that allow root logins, and for hunting for admin
+sites for common web apps.
 
 + Mine log files for IP addresses engaged in other bad behavior:
 
     - httpd logs
+
     - ssh logs
+
     - Other logs
 
 
 
-httpd logs
+Step 3c: httpd logs
 ========
 
 Scan logs looking failed requests:
@@ -395,17 +448,26 @@ Scan logs looking failed requests:
 
     - tmUnblock.cgi (Cisco/Linksys routers)
 
-Should anyone outside your firewall be requesting these urls?
+Should anyone outside your firewall be requesting these urls? Probably not.
+Makes them a good candidate for temporary blacklisting.
+
+**Remember:** If your firewall rules are setup correctly, whitelisted senders will
+still be able to send.
 
 (See script: `scan_logs_bruteforce`)
 
 
-sshd logs
+Step 3d: sshd logs
 =======
 
 + Broad-scope:
 
-    - Any failed login attempt (preferably 'not listed in AllowUsers')
+    - Any failed login attempt
+
+    - Better: usernames not listed in `AllowUsers` or `AllowGroups` directive
+       in `sshd_config`
+
+       (You do use one of the Allow directives in `sshd_config`, right?)
 
 + Narrow-scope:
 
@@ -418,33 +480,24 @@ via ssh?
 
 
 
-Step 5: Sharing X-Lists Among Servers (as Necessary)
-========================
-
-bgp-spamd is an excellent example of how to distribute lists among your own hosts.
-
-You did go to Peter Hessler's bgp tutorial, right? If not, the basics are pretty easy to learn.
-
-
-
-Step 6: Automate with **cron(8)**
+Step 4: Automate with **cron(8)**
 ==========================
 
 + Add scripts to crontab(1)
 
++ Most of the scripts work on a 24-hour rolling window
 
 
-Step 7: Firewall Rules
-===========
 
-+ As noted, whitelists should always win
+Step 5: Share X-Lists Among Servers (as Necessary)
+========================
 
-    Prevents missed email from our known-good list
+`bgp-spamd` is an excellent example of how to distribute lists among
+your own hosts.
 
-+ Expire blacklisted IPs regularly:
+You went to Peter Hessler's bgp tutorial, right?
 
-    Be conservative about blacklisting. 24 hours is usually long enough, especially when mining from logs.
-    You don't want to blacklist forever an IP that might move to another host later.
+If not, the basics are pretty easy to learn.
 
 
 
@@ -460,56 +513,147 @@ mail server?
 
 Still, firewall rules should be configured to always allow whitelisted senders through.
 
-Unless you really want to be hardcore. Then set blacklisting rules to always win. ;-)
-
-(See config: `pf.conf`)
 
 
-
-What If I Don't Run OpenBSD or Don't Use OpenSMTPD?
+What If I Don't Run OpenBSD?
 ========================
 
-+ Most of these techniques don't require OpenSMTPD, but some of the scripts
-   may have to be tweaked to work with the mailer of your choice
++ OpenBSD is not a requirement:
 
-+ 
+    - Need a firewall that supports rules, ideally rules driven by tables that can
+        be dynamically updated
+
++ **spamd(8)** is not a requirement either:
+
+    - Plugins or milters available for many MTAs that will greylist
+
+    - Rspamd has a greylist module
+
++ `smtpctl spf walk`, `spf_fetch`, and `spfwalk` work on many platforms:
+
+    - `spf_fetch` is pure shell and should work almost anywhere
+
+    - OpenSMTPD has been ported to many platforms
+
+    - `spfwalk` hasn't been tested on many, but is clean c code
+
+       Send complaints to [akp@hypernote.com](mailto:akp@hypernote.com)
 
 
 
-Choosing an MTA
-==============
+Other Interesting Options
+====================
+
++ Postscreen:
+
+   > [H]andles multiple inbound SMTP connections, and decides which clients may
+      talk to a Postfix SMTP server process.
+
+   - Accepts connections on port 25 and decides whether to forward the connection
+      on to Postfix
+
+   - Postfix specific :(
+
++ Post-MTA frameworks like Amavasd-new and Rspamd offer many of the same feature
 
 
 
-Postscreen
-========
+Is It Effective?
+===========
+
+Yes, very.
+
+Hypernote.com:
+
++ Registered in 1995
+
++ My primary email, [akp@hypernote.com](mailto:akp@hypernote.com), in use since 1995
+
++ On every spam list known to spammer-kind
+
++ My primary email, [akp@hypernote.com](mailto:akp@hypernote.com), is the domain catchall
+
++ Typically receive 0 to 3 spams per week, occassionally peaks at 5
+
+That said, the plural of anecdote is not data.
 
 
 
-Questions
-========
+What About DKIM and DMARC?
+================
+
+DKIM is the "Domain Keys Identified Mail" system:
+
+- Useful for verifying that an email wasn't spoofed even if it came from your domain or one
+   of your servers
+
+- Not very useful for detecting spam (some spammers publish DKIM keys),
+   and certainly not *before* the MTA receives the connection
+
+DMARC is the "Domain-based Message Authentication, Reporting and Conformance" system:
+
+- System based on both SPF, DKIM or both to detect spoofed email
+
+- Provides a mechanism for providing feedback to the domain owner
+
+- Allows setting a policy for what to do if one or both of the SPF and DKIM checks fail
+
+- No more useful than SPF alone for deteting spam *before* the MTA receives the
+   connection
+
+
+
+Analytics
+=======
+
++ I don't have data ... yet.
+
++ Techniques developed over time with no concern about tracking results other than
+   "Hey, my Inbox has less junk in it!"
+
++ Testing some ideas for counting denied connections vs actual connections
+
++ "Stand back! This may require code." But maybe not.
 
 
 
 Credits
 ======
 
-+ Gilles Chehade (mention others) (OpenSMTPD)
++ Gilles Chehade
 
 + Pitr Hansteen (pf, mail rants)
 
-+ OpenBSD Team
-
-+ BSDCan
++ OpenBSD developers
 
 + Students in "OpenSMTPD for the Real World" tutorial
+
++ And viewers like you!
+
+
+
+Questions
+========
+
+You have questions. I may have answers.
+
+
+
+Contact
+======
+
++ Aaron Poffenberger
++ [akp@hypernote.com](mailto:akp@hypernote.com)
++ [http://akpoff.com](http://akpoff.com)
++ @[akpoff](https://twiter.com/akpoff)
++ This presentation, look for blog [post](http://akpoff.com) or on
+   [github](http://github.com/akpoff/talks)
++ KG5DQJ
 
 
 
 Links
 ====
-
-+ https://en.wikipedia.org/wiki/Spamming
 
 + [Postscreen](http://www.postfix.org/POSTSCREEN_README.html)
 
@@ -564,3 +708,8 @@ Outline
 + Questions
 + Credits
 + Links
+
+Stuff
+=====
+
+egrep -l 'bruteforce show|bruteforce -T show' * | xargs cat | more
