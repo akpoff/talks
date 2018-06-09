@@ -650,10 +650,12 @@ Analytics
 
 
 
-Where's the Code
+Where's the Code?
 ==============
 
-Most of it is in `spf_fetch` (see Links slide)
+Most of it is in `spf_fetch` (see Links slide).
+
+A few bits left to commit and push.
 
 
 
