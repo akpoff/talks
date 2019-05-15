@@ -1,0 +1,13 @@
+#
+SHELL=/bin/sh
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/root/bin
+HOME=/var/log
+# MAILTO=Your email address
+#
+#minute hour    mday    month   wday    command
+#
+# <snip>
+@hourly					sleep $((RANDOM \% 1800)) && /usr/local/sbin/bgp-spamd.black.sh
+@hourly					sleep $((RANDOM \% 1800)) && /usr/local/bin/expire_bruteforce > /dev/null
+*/5	*	*	*	*	sleep $((RANDOM \% 1800)) && /usr/local/bin/remove_spam_senders 2>/dev/null
+*/5	*	*	*	*	/usr/local/bin/scan_logs_bruteforce 2>/dev/null

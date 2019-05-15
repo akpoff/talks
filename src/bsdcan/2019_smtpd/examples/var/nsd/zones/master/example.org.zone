@@ -1,0 +1,22 @@
+;Configuration for DNS Zone example.org
+
+$ORIGIN example.org.
+$TTL 300
+
+example.org.  IN  SOA  ns1.example.org.  info.example.org.  (
+        2019051401      ; serial number of this zone file
+        1d              ; slave refresh (1 day)
+        2h              ; slave retry time in case of a problem (2 hours)
+        4w              ; slave expiration time (4 weeks)
+        300             ; maximum caching time in case of failed lookups (1 hour)
+)
+example.org.  NS      ns1
+example.org.  MX      10      mail.example.org
+                   A          127.0.0.1
+mail               CNAME      example.org.
+ns1                A          127.0.0.1
+smtp               CNAME      example.org.
+; beware of long dkim keys
+default._domainkey IN    TXT  "v=DKIM1; p=<public_key>"
+; change the ip below to one or more valid values
+@                  IN    TXT  "v=spf1 ip4:127.0.0.1 mx ~all"

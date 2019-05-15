@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# Expects to be used with dovecot(1), OpenBSD spamd(8), spamdb(8), pf(4), and pf.conf(5)
+#
+# MAILDIR: http://cr.yp.to/proto/maildir.html
+# doveadmn: https://wiki2.dovecot.org/Tools/Doveadm/SearchQuery
+
+ADD_TO_SPAMTRAP=0;
+FOLDER=Junk
+IP_REGEX='((1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])'
+
+
+FLAGS='SEEN UNDELETED'
+# Messages in ${FOLDER} matching ${FLAGS} criteria are searched for the sending IP
+# That IP is removed from the spamdb WHITELIST and added as a TRAPPED IP
+#
+# N.B. This is a non-standard use a MAILDIR folder
+# I wouldn't turn this on for just any user
+# The user needs to undersand the fules in place here
+for i in $(doveadm search -u akp mailbox ${FOLDER} ${FLAGS} | while read guid uid ; do doveadm fetch -u akp hdr mailbox-guid $guid uid $uid; done | grep 'Received: from' | grep -oE "${IP_REGEX}" | sort -un) ; do
+	if [ "${i:-empty}" != "127.0.0.1" ] ; then
+		# add sa-learn
+		# remove WHITE listing
+		spamdb -d "$i";
+		# add as TRAPPED
+		spamdb -ta "$i";
+	fi
+done
+
+FLAGS='SEEN FLAGGED UNDELETED'
+# Messages in the ${FOLDER} matching ${FLAGS} criteria are searched for the Delivered-To header
+# That recipient is added as a SPAMTRAP address
+#
+# N.B. This is a non-standard use of FLAGs
+# I wouldn't turn this on for just any user
+# The user needs to undersand the fules in place here
+for i in $(doveadm search -u akp mailbox ${FOLDER} ${FLAGS} | while read guid uid ; do doveadm fetch -u akp hdr mailbox-guid $guid uid $uid; done | grep -i delivered-to | cut -d ' ' -f2 | grep '@' | sort -u) ; do
+	spamdb | grep SPAMTRAP | grep "$i" > /dev/null
+	if [ $? -eq 1 ] ; then
+		ADD_TO_SPAMTRAP=$((ADD_TO_SPAMTRAP + 1))
+		echo "$i" added to SPAMTRAP entries
+		# add as SPAMTRAP
+		spamdb -aT "$i"
+	fi
+done
+
+# Echo count of new addresses and full list of SPAMTRAP entries
+if [ $ADD_TO_SPAMTRAP -gt 0 ] ; then
+	echo ''
+	echo Count of new spamtrap addresses added: $ADD_TO_SPAMTRAP
+	echo ''
+	echo SPAMTRAP entries
+	spamdb | grep SPAMTRAP | sort
+fi
+
+
+# Expunge DELETED mails from ${FOLDER}
+# Not required, just to keep the folder tidy
+doveadm expunge -u akp mailbox ${FOLDER} DELETED

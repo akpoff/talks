@@ -1,0 +1,7 @@
+# tables(5) - Aliasing tables
+#
+# virtual user mapping
+
+# domain catchall
+user1@example.org         user1
+user2@example.org         user2

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+rm -f /var/db/bruteforce
+touch /var/db/bruteforce
+
+INT_IP="^10.10"
+EXT_IP=$(ifconfig egress | grep inet | awk ' { print $2 }' | egrep -ao '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
+
+for i in $(egrep '403|404' /var/www/logs/access.log | grep -v 'GET / ' | egrep -iv 'Robots|SiteMap' | egrep -ao '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -nu | egrep -v "0.0.0.0|$EXT_IP|$$INT_IP") ; do
+	echo $i >> /var/db/bruteforce
+done
+
+for i in $(egrep -i 'no matching key exchange method|not listed in AllowUsers|invalid user' /var/log/authlog | egrep -ao '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -nu | egrep -v "0.0.0.0|$EXT_IP|$INT_IP") ; do
+	echo $i >> /var/db/bruteforce
+done
+
+for i in $(egrep -i "auth failed|Authentication failed" /var/log/maillog | egrep -ao '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -nu | egrep -v "0.0.0.0|$EXT_IP|$INT_IP"); do
+	echo $i >> /var/db/bruteforce
+done
+
+pfctl -t bruteforce -T add -f /var/db/bruteforce
+# protect home ip from inclusion
+pfctl -t bruteforce -T delete 73.232.114.226
+pfctl -t bruteforce -T delete akpoff.com
+pfctl -t bruteforce -T delete akpoff.com
+pfctl -t bruteforce -T delete mail.poffenberger.org
+pfctl -t bruteforce -T delete 127.0.0.1

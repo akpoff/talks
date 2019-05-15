@@ -1,0 +1,50 @@
+# OpenSMTPD for the Real World Example Installer
+
+A quick and dirty way to install files for OpenSMTPD for the Real
+World Tutorial
+
+
+# WARNING
+
+Running could do bad things to your computer.
+
+It's your computer. Make sure you understand what it does!
+
+
+# Modifications
+
+Most of the configuration files are ready to use. The TLS/SSL files
+and acme-client need configuration to be ready for use.
+
+There are also several files in etc/mail that will need to be
+configured for your specific domains and users.
+
+Edit them in the directories below before running.
+
+
+# Test Drive
+
+Try the following first to see the actions:
+```
+   doas rdist -n
+```
+
+Try this to see which files it will install:
+```
+   doas rdist -overify
+```
+
+
+# Install
+Run this to install targets:
+```
+   doas rdist
+```
+
+or individual targets:
+
+```
+   doas rdist etc
+   doas rdist usr
+   doas rdist var
+```

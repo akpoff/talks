@@ -1,0 +1,13 @@
+# daily.local
+
+next_part "acme-client:"
+acme-client example.org && rcctl reload httpd
+
+next_part "spf_update_pf:"
+/usr/local/sbin/spf_update_pf
+
+if [ `rcctl ls on|grep spamd` ]; then
+	next_part "spamd-setup:"
+	/usr/libexec/spamd-setup
+fi
+

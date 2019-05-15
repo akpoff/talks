@@ -1,0 +1,27 @@
+# Distfile
+
+EXAMPLE_ETC = ( etc )
+EXAMPLE_USR = ( usr )
+EXAMPLE_VAR = ( var )
+
+HOSTS = ( localhost )
+
+etc:
+${EXAMPLE_ETC} -> ${HOSTS}
+	install -osavetargets,history,nochkgroup,nochkmode,nochkowner /etc ;
+	special "chown root:wheel ${REMFILE}" ;
+	special "chmod 644 ${REMFILE}" ;
+	cmdspecial "chown root:_smtpd /etc/mail/*credentials" ;
+	cmdspecial "chmod 640 /etc/mail/*credentials" ;
+	cmdspecial "chmod 600 /etc/pf*.conf" ;
+	cmdspecial "chmod 600 /etc/ssl/private/*.key" ;
+	cmdspecial "touch /var/db/common_white /etc/mail/nospamd" ;
+
+usr:
+${EXAMPLE_USR} -> ${HOSTS}
+	install -osavetargets,nochkgroup,nochkmode,nochkowner /usr ;
+	special "chown root:wheel ${REMFILE}" ;
+
+var:
+${EXAMPLE_VAR} -> ${HOSTS}
+	install -osavetargets,nochkgroup,nochkmode,nochkowner /var ;

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+result=$(pfctl -t bruteforce -T expire 86400 2>&1)
+count=$(echo $result  | cut -d '/' -f 1)
+
+if [ ${count:-0} -gt 0 ] ; then
+	echo $result
+fi

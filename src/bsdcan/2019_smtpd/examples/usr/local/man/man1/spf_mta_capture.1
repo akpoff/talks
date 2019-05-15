@@ -1,0 +1,158 @@
+.\" Copyright (c) 2017 Aaron Poffenberger <akp@hypernote.com>
+.\"
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.\"
+.Dd $Mdocdate: Sep 03 2017 $
+.Dt SPF_MTA_CAPTURE 1
+.Os
+.Sh NAME
+.Nm spf_mta_capture
+.Nd capture outbound mail
+.Sh SYNOPSIS
+.Nm spf_mta_capture
+.Op Fl acfhptv
+.Op Fl a Ar spf_fetch_args
+.Op Fl c Ar common
+.Op Fl f Ar file
+.Op Fl h
+.Op Fl p Ar prefix
+.Op Fl t Ar table
+.Op Fl v
+.Sh DESCRIPTION
+The
+.Nm
+utility
+.Xr spf_fetch 1
+parses each line of text received from stdin looking for outbound mail
+transfers.
+It captures the domain of the recipient email.
+The domain is checked against the list of common domains and exlucded
+if found.
+If not found,
+.Nm
+calls
+.Xr spf_fetch 1
+with the domain and finally adds the discovered SPF records to the
+named table in
+.Xr pf 4
+and logs the domain and time to the specified file.
+.Pp
+Suitable for use with
+.Xr syslogd 8 .
+.Pp
+The options are as follows:
+.Bl -tag -width Ds
+.It Fl a
+Arguments to pass through to
+.Xr spf_fetch 1 .
+.It Fl c
+File with list of common domains to check against.
+Default: /etc/mail/common_domains
+.It Fl f
+File to log domains to.
+Default: /etc/mail/mta_domains
+.It Fl h
+Help message.
+.It Fl p
+Prefix to use for file and table names with default path.
+Default: common.
+.It Fl t
+.Xr pf 4
+table to load the addresses to.
+Default: mta_white
+.It Fl v
+Print the version.
+.El
+.Sh FILES
+.Bl -tag -width "file" -compact
+.It Pa common
+File with common domains to check against.
+.It Pa file
+Formatted with one domain per line.
+Comments begin with hash (#) and includes the Unix timestamp when it
+was added.
+.Pp
+.Em Note :
+The specified file must be read/writable by the
+.Xr syslogd 8
+service account, typically
+.Em _syslogd .
+.It Pa file_ips
+SPF records (ip addresses) of the domains.
+.Pp
+.Em Note :
+The specified file must be read/writable by the
+.Xr syslogd 8
+service account, typically
+.Em _syslogd .
+.El
+.Sh EXAMPLES
+.Xr syslog.conf 5
+configuration:
+.Bd -literal
+	mail.info	|/usr/local/bin/spf_mta_capture
+.Ed
+.Pp
+Daily
+.Xr cron 8
+job with
+.Xr spf_update_pf 1 :
+.Bd -literal
+	@daily		/usr/local/bin/spf_update_pf -r \\
+			    -f /etc/mail/mta_domains \\
+			    -t mta_white
+.Ed
+.Pp
+Sample output of /etc/mail/mta_domains:
+.Bd -literal
+	example.net    # 1504230254
+	example.com    # 1504230256
+.Ed
+.Pp
+Sample entry in
+.Xr pf.conf 5 :
+.Bd -literal
+	permit nopass _syslogd as root cmd pfctl
+.Ed
+.Sh DIAGNOSTICS
+.Nm
+utility always exits 0.
+.Sh SEE ALSO
+.Xr spf_fetch 1 ,
+.Xr spf_update_pf 1 ,
+.Xr pf 4 ,
+.Xr syslog.conf 5 ,
+.Xr syslogd 8
+.Sh AUTHORS
+.An -nosplit
+The
+.Nm
+utility was written by
+.An Aaron Poffenberger Aq Mt akp@hypernote.com .
+.Sh BUGS
+.Nm
+should return error codes for conditions like failed look-ups.
+.Sh SECURITY CONSIDERATIONS
+.Nm
+requires elevated privileges to add address to the named
+.Xr pf 4
+table.
+The
+.Em _syslogd
+user should be granted permission in
+.Xr doas.conf 5
+or
+.Xr sudo.conf 5
+to call pfctl
+.Em without
+password.

@@ -1,0 +1,138 @@
+#!/bin/sh
+
+#
+# Copyright (c) 2017 Aaron Poffenberger <akp@hypernote.com>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+
+__progname=$(basename "$0")
+
+TRUE=0
+FALSE=1
+
+PREFIX=''
+PREFIX_DEF='common'
+
+COMMON='/etc/mail/common_domains'
+FILE="/etc/mail/${PREFIX_DEF}_domains"
+SPF_FETCH_ARGS=''
+TABLE="${PREFIX_DEF}_white"
+
+DOAS=$(which doas)
+if [ -z "$DOAS" ] ; then
+	DOAS=$(which sudo)
+fi
+
+CMD=run
+VERSION=0.1
+
+function log_msg {
+	local OPTIND o a
+	while getopts :p: opt ; do
+		case $opt in
+			p)
+				PAD=$OPTARG
+				;;
+			*)
+				;;
+		esac
+	done
+	shift $(( OPTIND - 1 ))
+	msg=$@
+
+	if [ -z "$msg" ] ; then
+		return 0
+	fi
+
+	if [ -n "$PAD" ] ; then
+		printf -v padding "%-${PAD}s" ' '
+	fi
+
+	echo "${padding}${msg}"
+}
+
+function version {
+	log_msg "$__progname $VERSION"
+}
+
+function usage {
+	# dispose of stdin data
+	if [ ! -t 0 ] ; then
+		cat > /dev/null
+	fi
+
+	usage="usage: $__progname"
+	length=$(expr ${#usage} + 1)
+
+	log_msg "$usage [-acfhptv] [-a spf_fetch_args] [-c common] [-f file] [-h]"
+	log_msg -p $length "[-p prefix] [-t table] [-v]"
+}
+
+while getopts :af:h:t:v: opt ; do
+	case $opt in
+		a)
+			SPF_FETCH_ARGS=$OPTARG
+			;;
+		c)
+			COMMON=$OPTARG
+			;;
+		f)
+			FILE=$OPTARG
+			;;
+		h)
+			CMD="usage"
+			;;
+		t)
+			TABLE=$OPTARG
+			;;
+		v)
+			CMD="VERSION"
+			;;
+		:)
+			log_msg $__progname: option requires an argument \
+				-- $OPTARG
+			log_msg
+			CMD=abort
+			;;
+		\?)
+			log_msg $__progname: invalid option -- $OPTARG
+			log_msg
+			CMD=abort
+			;;
+	esac
+done
+shift $(( OPTIND - 1 ))
+domains=$@
+
+# override FILE and TABLE if PREFIX set
+if [ -n "$PREFIX" ] ; then
+	echo here
+	FILE="/etc/mail/${PREFIX}_domains"
+	TABLE="${PREFIX}_white"
+fi
+
+case $CMD in
+	run)
+		run
+		;;
+	usage)
+		usage
+		;;
+	VERSION)
+		version
+		;;
+	*)
+		usage
+		;;
+esac
