@@ -4,4 +4,4 @@
 *.log
 *.dvi
 *.tex
-obj/*
+obj
