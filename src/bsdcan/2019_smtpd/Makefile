@@ -1,12 +1,18 @@
+# Prevent running without a build dir distinct from the root dir
+.ifnmake obj && "$(.OBJDIR)" != "$(.CURDIR)/obj"
+.BEGIN:
+	@echo Create $(.CURDIR)/obj with \`make obj\`
+	false
+.endif
 
 
-all: smtpd_tutorial.pdf smtpd_cheatsheet.pdf
+SRCS !:= find $(.CURDIR) -type f -name \*.md | sed -e 's|$(.CURDIR)/||g'
+OBJS   := $(SRCS:R:S/$/.pdf/g)
 
-smtpd_tutorial.pdf: smtpd_tutorial.md
-	pandoc -V theme:Madrid --slide-level=1  -t beamer+definition_lists smtpd_tutorial.md -o smtpd_tutorial.pdf
 
-smtpd_cheatsheet.pdf: smtpd_cheatsheet.md
-	pandoc smtpd_cheatsheet.md -o smtpd_cheatsheet.pdf
+.SUFFIXES: .md .pdf
+
+all: $(OBJS)
 
 commit:
 	git add smtpd_tutorial.md
@@ -14,8 +20,12 @@ commit:
 	git commit -m "Current version"
 
 clean:
-	rm -f smtpd_tutorial.pdf
-	rm -f smtpd_cheatsheet.pdf
+	rm -f obj/*
 
 view: smtpd_tutorial.pdf
-	mupdf smtpd_tutorial.pdf
+	mupdf obj/smtpd_tutorial.pdf
+
+
+# Inference-rule targets
+.md.pdf:
+	pandoc -V theme:Madrid --slide-level=1  -t beamer+definition_lists $< -o $@
