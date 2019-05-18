@@ -27,5 +27,12 @@ view: smtpd_tutorial.pdf
 
 
 # Inference-rule targets
-.md.pdf:
-	pandoc -V theme:Madrid --slide-level=1  -t beamer+definition_lists $< -o $@
+.md.pdf: Makefile
+	pandoc -s \
+	-f markdown \
+	-V colortheme:dove \
+	-V innertheme:circles \
+	-V fonttheme:serif \
+	--slide-level=1 \
+	-t beamer $< -o $@
+

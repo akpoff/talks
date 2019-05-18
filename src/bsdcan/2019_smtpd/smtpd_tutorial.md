@@ -6,6 +6,10 @@ author: Aaron Poffenberger
 institute: akp@hypernote.com
 email: akp@hypernote.com
 tags: email spam
+classoption:
+- bigger
+- presentation
+- t
 ---
 
 
@@ -13,12 +17,9 @@ tags: email spam
 
 Aaron Poffenberger
 
-- Software developer 20+ professionally
-   - Security-software, and secure-software, developer
+- Software developer
 - OpenBSD user since ~3.2
 - Mail Server admin 20+ years
-- Amateur radio enthusiast
-- Electronics hobbyist
 
 
 # Introduction -- You
