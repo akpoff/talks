@@ -1,0 +1,100 @@
+[deja dup]
+[git-annex]: https://git-annex.branchable.com/
+[OpenBSD]: https://www.openbsd.org/
+[OpenSSH]: https://www.openssh.com/
+[OpenRsync]: http://www.openrsync.org/
+[rsync]: https://www.samba.org/rsync/
+[sshfs]: https://github.com/libfuse/sshfs/
+[Starting Xlock on USB HID Insertion]: http://akpoff.com/archive/starting_xlock_on_usb_hid_insertion.html
+[Syncthing]: https://syncthing.net/
+[Tarsnap]: https://www.tarsnap.com/
+[That Time I Nuked the Disklabel]: <http://akpoff.com/archive/2017/that_time_i_nuked_the_disklabel_and_recovered_the_disk.html>
+[Unison]: https://www.cis.upenn.edu/~bcpierce/unison/
+[Wikipedia File Synchronization Comparison]: https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software
+[The Untold Story of NotPetya]: https://www.wired.com/story/notpetya-cyberattack-ukraine-russia-code-crashed-the-world/
+
+
+
+# Why lock the Screen when a Mouse is Attached?
+
+With the rise of full-disk encryption you can't just grab the disk out
+of a computer and get to the data. You need it running, and logged in,
+which means you need to snatch it remove the user while they're using
+it.
+
+Once snatched, you insert a mouse jiggler to "move" the mouse every
+few seconds to simulate activity and prevent the lockscreen from
+activating.
+
+
+
+
+
+# System Hardening - Encryption
+
+Disk drives are not the only area where encryption matters:
+
+- Some data should be encrypted at rest (*e.g.*, passwords)
+
+Encryption is also critical for on-the-go backups and recovery:
+
+- Learn to use OpenSSH features like **ProxyJump (-J)**.
+
+
+# What's ProxyJump (-J)?
+
+Ever wondered how to connect to your host on the other side of the
+firewall? **ProxyJump**
+
+```
+  Setting this option will cause ssh(1) to connect to
+  the target host by first making a ssh(1) connection
+  to the specified ProxyJump host and then establishing
+  a TCP forwarding to the ultimate target from there.
+```
+
+Yes, you can make multiple jumps with a comma-delimited list of
+ProxyJump hosts.
+
+
+
+
+
+# What do these questions have to do with backups?
+
+Disaster recovery planning is more than making backups.
+
+- Knowing what can going wrong and how affects how your prepare
+- But don't spend ages considering every possibility
+- Take a defense in depth approach
+- Security isn't a destination ... it's a process
+
+
+
+
+
+# Machine Physical Security - OS
+
+If your OS supports it:
+
+- Consider a `cron(8)` job that hibernates the computer every night.
+  It's hard to hack past full-disk encryption.
+- Lock the screen on insertion and maybe removal of USB HIDs
+  (human-interface devices) like keyboards and mice.
+
+*N.B.* If you're on OpenBSD, I wrote `hotplugd(8)` attach and remove
+scripts that start `xlock(1)` when HID devices are inserted or
+removed.
+
+# Why lock the Screen when a Mouse is Attached?
+
+With the rise of full-disk encryption you can't just grab the disk out
+of a computer and get to the data. You need it running, and logged in,
+which means you need to snatch it remove the user while they're using
+it.
+
+Once snatched, you insert a mouse jiggler to "move" the mouse every
+few seconds to simulate activity and prevent the lockscreen from
+activating.
+
+
